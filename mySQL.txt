@@ -1,0 +1,46 @@
+CREATE TABLE `projectmanager`.`parent_task` (
+  `parent_id` int NOT NULL AUTO_INCREMENT,
+  `parent_task` varchar(100) NOT NULL,
+  PRIMARY KEY (`parent_id`),
+  UNIQUE KEY `Parent_ID_UNIQUE` (`parent_id`)
+);
+
+CREATE TABLE `projectmanager`.`project` (
+  `project_id` int NOT NULL AUTO_INCREMENT,
+  `project_desc` varchar(100) NOT NULL,
+  `start_date` datetime NULL,
+  `end_date` datetime DEFAULT NULL,
+  `priority` int NOT NULL DEFAULT '0',
+  `project_status` tinyint,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`project_id`),
+  UNIQUE KEY `Project_ID_UNIQUE` (`project_id`)
+);
+
+CREATE TABLE `projectmanager`.`task` (
+  `task_id` int NOT NULL AUTO_INCREMENT,
+  `parent_id` int DEFAULT NULL,
+  `project_id` int DEFAULT NULL,
+  `task_desc` varchar(150) DEFAULT NULL,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `priority` int NOT NULL DEFAULT '0',
+  `task_status` tinyint,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`task_id`),
+  UNIQUE KEY `Task_ID_UNIQUE` (`task_id`),
+  KEY `ParentID_idx` (`parent_id`),
+  KEY `ProjectID_idx` (`project_id`),
+  CONSTRAINT `ParentID` FOREIGN KEY (`parent_id`) REFERENCES `parent_task` (`parent_id`),
+  CONSTRAINT `ProjectID` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`)
+);
+
+CREATE TABLE `projectmanager`.`users` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(45) DEFAULT NULL,
+  `last_name` varchar(45) DEFAULT NULL,
+  `employee_id` int DEFAULT NULL,  
+  `manager` tinyint,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `USER_ID_UNIQUE` (`user_id`)  
+);
