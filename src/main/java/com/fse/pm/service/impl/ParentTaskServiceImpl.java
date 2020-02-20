@@ -22,8 +22,7 @@ public class ParentTaskServiceImpl implements IParentTaskService{
 
 	@Override
 	public List<ParentTask> findAll() {
-		// TODO Auto-generated method stub
-		// TODO 
+		// TODO Auto-generated method stub		 
 		return parentTaskDao.findAll();
 	}
 
