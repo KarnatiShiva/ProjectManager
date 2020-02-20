@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,9 +30,11 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fse.pm.entities.ParentTask;
 import com.fse.pm.entities.Project;
 import com.fse.pm.entities.Users;
+import com.fse.pm.mapper.ParentTaskRequestResponse;
 import com.fse.pm.mapper.ProjectRequest;
 import com.fse.pm.mapper.ProjectResponse;
 import com.fse.pm.mapper.TaskRequestResponse;
+import com.fse.pm.mapper.UserRequestResponse;
 import com.fse.pm.repositories.IParentTaskRepository;
 import com.fse.pm.repositories.IProjectRepository;
 import com.fse.pm.repositories.ITaskRepository;
@@ -97,10 +100,12 @@ public class TestProjectManagerService extends TestCase{
         users.setLastName("FirstNme");
         users.setFirstName("LastNme");
         users.setEmployeeId(125502);
-        users.setManager(false);    
-        Users addUser = userServiceImpl.createUser(users);
+        users.setManager(false);
+        ModelMapper modelMapper = new ModelMapper();
+		UserRequestResponse userRequestResponse = modelMapper.map(users, UserRequestResponse.class);
+        userServiceImpl.createUser(userRequestResponse);
         
-        ResponseEntity<String> response = testRestTemplate.postForEntity(apiUrl.concat("/adduser"), addUser, String.class);
+        ResponseEntity<String> response = testRestTemplate.postForEntity(apiUrl.concat("/adduser"), userRequestResponse, String.class);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         
         ResponseEntity<String> response1 = testRestTemplate.getForEntity(apiUrl.concat("/viewuser/1"), String.class);
@@ -116,11 +121,12 @@ public class TestProjectManagerService extends TestCase{
         users.setFirstName("LastNme1");
         users.setEmployeeId(123456);
         users.setManager(false);    
-        Users addUser = userServiceImpl.createUser(users);
+        ModelMapper modelMapper = new ModelMapper();
+		UserRequestResponse userRequestResponse = modelMapper.map(users, UserRequestResponse.class);		
         
-        addUser.setFirstName("Shiva");               
+        userRequestResponse.setFirstName("Shiva");               
         
-        ResponseEntity<String> response = testRestTemplate.postForEntity(apiUrl.concat("/updateuser"), addUser, String.class);
+        ResponseEntity<String> response = testRestTemplate.postForEntity(apiUrl.concat("/updateuser"), userRequestResponse, String.class);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
     }   
     
@@ -132,12 +138,14 @@ public class TestProjectManagerService extends TestCase{
         users.setLastName("FirstNme1");
         users.setFirstName("LastNme1");
         users.setEmployeeId(12345);
-        users.setManager(false);            
-		userServiceImpl.createUser(users);		
-		userServiceImpl.deleteUser(users.getUserId());
-		Optional<Users> user = userServiceImpl.findUser(users.getUserId());		
-		assertEquals(user,null);
-		userServiceImpl.createUser(users);        
+        users.setManager(false);
+        ModelMapper modelMapper = new ModelMapper();
+		UserRequestResponse userRequestResponse = modelMapper.map(users, UserRequestResponse.class);
+		userRequestResponse = userServiceImpl.createUser(userRequestResponse);	
+		userServiceImpl.deleteUser(userRequestResponse.getUserId());		
+		Optional<Users> user = userServiceImpl.findUser(userRequestResponse.getUserId());		
+		assertEquals(user,Optional.empty());
+		//userServiceImpl.createUser(userRequestResponse);        
 		
 		/*String apiURL1 = apiUrl.concat("/deleteuser/" + users.getUserId());
 		System.out.println("Shiva " + apiURL1);
@@ -170,7 +178,10 @@ public class TestProjectManagerService extends TestCase{
 		ParentTask parentTask = new ParentTask();
 		parentTask.setParentId(1);
 		parentTask.setParentTask("ShivaTest");    
-		parentTaskServiceImpl.createParent(parentTask);
+		
+		ModelMapper modelMapper = new ModelMapper();
+		ParentTaskRequestResponse parentTaskRequestResponse = modelMapper.map(parentTask, ParentTaskRequestResponse.class);
+		parentTaskServiceImpl.createParent(parentTaskRequestResponse);        
 		List<ParentTask> parentList = parentTaskServiceImpl.findAll();
 		assertThat(parentList.size(), equalTo(1));        
 		
@@ -187,8 +198,9 @@ public class TestProjectManagerService extends TestCase{
 		ParentTask parentTask = new ParentTask();
 		//parentTask.setParentId(1);
 		parentTask.setParentTask("ShivaTest");    
-		parentTaskServiceImpl.createParent(parentTask);
-		ParentTask parent = parentTaskServiceImpl.findParent(parentTask.getParentId());
+		ModelMapper modelMapper = new ModelMapper();  
+		ParentTaskRequestResponse parentTaskRequestResponse = parentTaskServiceImpl.createParent(modelMapper.map(parentTask, ParentTaskRequestResponse.class));
+		ParentTask parent = parentTaskServiceImpl.findParent(parentTaskRequestResponse.getParentId());
 		//System.out.println("Hello" + parent.getParentId());
 		assertNotNull(parent);
 		String apiURL1 = apiUrl.concat("/viewparenttask/" + parent.getParentId());

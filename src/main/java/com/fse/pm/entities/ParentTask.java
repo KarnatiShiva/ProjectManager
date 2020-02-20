@@ -17,7 +17,7 @@ public class ParentTask {
 	private int parentId;
 	
 	@Column(name="parent_task")
-	private String parentTask;
+	private String parentTaskDesc;
 	
 	public int getParentId() {
 		return this.parentId;
@@ -28,11 +28,11 @@ public class ParentTask {
 	}
 	
 	public String getParentTask() {
-		return this.parentTask;
+		return this.parentTaskDesc;
 	}
 
-	public void setParentTask(String parentTask) {
-		this.parentTask = parentTask;
+	public void setParentTask(String parentTaskDesc) {
+		this.parentTaskDesc = parentTaskDesc;
 	}
 	
 }

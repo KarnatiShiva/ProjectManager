@@ -51,8 +51,7 @@ public class ProjectController {
 	}
 		
 	@PostMapping("/addproject")
-	public List<ProjectResponse> createProject(@Valid @RequestBody ProjectRequest request) {
-		//return ResponseEntity.ok().body(service.createProject(request));
+	public List<ProjectResponse> createProject(@Valid @RequestBody ProjectRequest request) {		
 		return service.createProject(request);
 	}
 }

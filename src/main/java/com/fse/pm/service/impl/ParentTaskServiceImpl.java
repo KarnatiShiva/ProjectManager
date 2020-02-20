@@ -3,12 +3,14 @@ package com.fse.pm.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fse.pm.dao.IParentTaskDao;
 import com.fse.pm.entities.ParentTask;
+import com.fse.pm.mapper.ParentTaskRequestResponse;
 import com.fse.pm.service.IParentTaskService;
 
 @Transactional
@@ -16,12 +18,7 @@ import com.fse.pm.service.IParentTaskService;
 public class ParentTaskServiceImpl implements IParentTaskService{
 	
 	@Autowired
-	private IParentTaskDao parentTaskDao;
-
-	/*@Autowired
-	public void setParentTaskDao(IParentTaskDao parentTaskDao) {
-		this.parentTaskDao = parentTaskDao;
-	}*/
+	private IParentTaskDao parentTaskDao;	
 
 	@Override
 	public List<ParentTask> findAll() {
@@ -40,9 +37,13 @@ public class ParentTaskServiceImpl implements IParentTaskService{
 	}
 
 	@Override
-	public ParentTask createParent(ParentTask parentTask) {
+	public ParentTaskRequestResponse createParent(ParentTaskRequestResponse request) {
 		// TODO Auto-generated method stub
-		return parentTaskDao.createParent(parentTask);
+		ParentTask parentTask = new ParentTask();
+		parentTask.setParentTask(request.getParentTask());
+		parentTaskDao.createParent(parentTask);		
+		ModelMapper modelMapper = new ModelMapper();
+		ParentTaskRequestResponse response = modelMapper.map(parentTask, ParentTaskRequestResponse.class);
+		return response;		
 	}
-
 }

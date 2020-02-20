@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fse.pm.entities.Users;
+import com.fse.pm.mapper.UserRequestResponse;
 
 public interface IUserService {
 
@@ -11,9 +12,9 @@ public interface IUserService {
 	
 	public Optional<Users> findUser(int userId) ;
 	
-	public Users createUser(Users user) ;
+	public UserRequestResponse createUser(UserRequestResponse user) ;
 	
-	public Users updateUser(Users user) ;
+	public UserRequestResponse updateUser(UserRequestResponse user) ;
 	
 	public void deleteUser(int userId) ;
 }

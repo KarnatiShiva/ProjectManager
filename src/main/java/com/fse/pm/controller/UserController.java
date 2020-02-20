@@ -7,15 +7,16 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fse.pm.entities.Users;
+import com.fse.pm.mapper.UserRequestResponse;
 import com.fse.pm.service.IUserService;
 
 @RestController
@@ -46,17 +47,17 @@ public class UserController {
 	}
 	
 	@PostMapping("/adduser")
-	public ResponseEntity<Users> createUser(@Valid @RequestBody Users user) {
+	public ResponseEntity<UserRequestResponse> createUser(@Valid @RequestBody UserRequestResponse user) {
 		return ResponseEntity.ok().body(service.createUser(user));
 	}
 	
-	@RequestMapping(value="/deleteuser/{did}",method={RequestMethod.GET,RequestMethod.DELETE})
+	@DeleteMapping("/deleteuser/{did}")
 	public void deleteUser(@PathVariable(value = "did") int userId) {
 		service.deleteUser(userId);
 	}
 		
 	@PostMapping("/updateuser")
-	public ResponseEntity<Users> updateUser(@Valid @RequestBody Users user) {	
+	public ResponseEntity<UserRequestResponse> updateUser(@Valid @RequestBody UserRequestResponse user) {	
 		return ResponseEntity.ok().body(service.updateUser(user));
 	}
 

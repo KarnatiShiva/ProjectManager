@@ -33,14 +33,6 @@ public class TaskServiceImpl implements ITaskService{
 	@Autowired
 	private IParentTaskRepository parentTaskRepository;
 	
-	/*@Autowired
-	private IUserRepository userRepository;*/
-
-	/*@Autowired
-	public void setParentTaskDao(IParentTaskDao parentTaskDao) {
-		this.parentTaskDao = parentTaskDao;
-	}*/
-
 	@Override
 	public List<TaskRequestResponse> findAll() {
 		// TODO Auto-generated method stub
@@ -86,8 +78,7 @@ public class TaskServiceImpl implements ITaskService{
 	@Override
 	public TaskRequestResponse updateTask(TaskRequestResponse request) {
 		// TODO Auto-generated method stub
-		Task task = new Task();		
-		//Optional<Task> optional = taskDao.findTask(new Integer(request.getTaskId()));
+		Task task = new Task();
 		Optional<Task> optional = taskDao.findTask(request.getTaskId());
 		if (optional.isPresent()) {
 			task = optional.get();
@@ -131,20 +122,6 @@ public class TaskServiceImpl implements ITaskService{
 		taskReqResp.setEmployeeId(task.getUser().getEmployeeId());
 		return taskReqResp;
 	}
-
-	/*	@Override
-	public Task endTask(Integer taskId) {
-		// TODO Auto-generated method stub
-		Optional<Task> optional = taskDao.findTask(taskId);
-		if (optional.isPresent()) {
-			Task task = optional.get();
-			task.setEndDate(new Date());
-			task.setTaskStatus(true);
-			Task updatedTask = createTask(task);
-			return updatedTask;
-		}
-		return null;
-	} */
 	
 	@Override
 	public Task endTask(Integer taskId) {

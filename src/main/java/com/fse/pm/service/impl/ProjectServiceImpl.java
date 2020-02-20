@@ -20,18 +20,10 @@ import com.fse.pm.service.IProjectService;
 public class ProjectServiceImpl implements IProjectService{
 	
 	@Autowired
-	private IProjectDao projectDao;
-	
-	/*@Autowired
-	private IProjectRepository projectRepository; */
+	private IProjectDao projectDao;	
 	
 	@Autowired
 	private IUserRepository userRepository;
-
-	/*@Autowired
-	public void setParentTaskDao(IParentTaskDao parentTaskDao) {
-		this.parentTaskDao = parentTaskDao;
-	}*/
 
 	@Override
 	public List<ProjectResponse> findAll() {
@@ -68,8 +60,7 @@ public class ProjectServiceImpl implements IProjectService{
 		projectReq.setEndDate(request.getProjectEndDate());
 		projectReq.setPriority(request.getProjectPriority());
 		projectReq.setProjectStatus(request.isProjectStatus());
-		projectReq.setUser(userRepository.getOne(request.getUserId()));
-		//projectRepository.saveAndFlush(projectReq);
+		projectReq.setUser(userRepository.getOne(request.getUserId()));		
 		projectDao.addProject(projectReq);
 		List<ProjectResponse> projectResps = findAll();
 		return projectResps;
@@ -85,8 +76,7 @@ public class ProjectServiceImpl implements IProjectService{
 		projectReq.setEndDate(request.getProjectEndDate());
 		projectReq.setPriority(request.getProjectPriority());
 		projectReq.setUser(userRepository.getOne(request.getUserId()));
-
-		//projectRepository.saveAndFlush(projectReq);
+	
 		projectDao.addProject(projectReq);
 
 		List<ProjectResponse> projectResps = findAll();
@@ -109,9 +99,7 @@ public class ProjectServiceImpl implements IProjectService{
 		resp.setLastName(project.getUser().getLastName());
 		resp.setEmployeeId(project.getUser().getEmployeeId());
 		resp.setNumberOfTasks(project.getTaskCount());
-		resp.setCompletedTasks(project.getCompletedTaskCount());
-		//resp.setNumberOfTasks(taskJpaRepository.countByProjectProjectId(project.getProjectId()));
-		//resp.setCompletedTasks(taskJpaRepository.countByProjectProjectIdAndStatus(project.getProjectId(), true));
+		resp.setCompletedTasks(project.getCompletedTaskCount());		
 		resp.setProjectStatus(project.isProjectStatus());
 		return resp;
 	}

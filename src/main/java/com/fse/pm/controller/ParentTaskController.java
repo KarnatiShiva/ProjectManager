@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fse.pm.entities.ParentTask;
+import com.fse.pm.mapper.ParentTaskRequestResponse;
 import com.fse.pm.service.IParentTaskService;
 
 @RestController
@@ -45,7 +46,7 @@ public class ParentTaskController {
 	}
 	
 	@PostMapping("/addparenttask")
-	public ResponseEntity<ParentTask> createParent(@Valid @RequestBody ParentTask parentTask) {
+	public ResponseEntity<ParentTaskRequestResponse> createParent(@Valid @RequestBody ParentTaskRequestResponse parentTask) {
 		return ResponseEntity.ok().body(service.createParent(parentTask));
 	}
 
