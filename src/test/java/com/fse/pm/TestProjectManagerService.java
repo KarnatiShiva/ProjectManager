@@ -97,8 +97,8 @@ public class TestProjectManagerService extends TestCase{
 
         Users users = new Users();
         //users.setUserId(1);
-        users.setLastName("FirstNme");
-        users.setFirstName("LastNme");
+        users.setLastName("FirstName");
+        users.setFirstName("LastNamex");
         users.setEmployeeId(125502);
         users.setManager(false);
         ModelMapper modelMapper = new ModelMapper();
